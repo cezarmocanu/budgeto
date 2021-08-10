@@ -1,5 +1,6 @@
+import 'package:budgeto_flutter/models/category.dart';
+import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
-import '../../models/goal.dart';
 
 class DashboardPage extends StatefulWidget {
   DashboardPage({Key? key, required this.title, required this.goals})
@@ -21,12 +22,16 @@ class _DashboarState extends State<DashboardPage> {
       itemCount: widget.goals.length,
       itemBuilder: (BuildContext context, int index) {
         return Container(
-            height: 50,
-            color: Colors.amber[(index % 10) * 100 + 100],
-            child: Center(
-              child: Text(
-                  "${widget.goals[index].title} - ${widget.goals[index].budget}"),
-            ));
+          height: 50,
+          color: Colors.amber[(index % 10) * 100 + 100],
+          child: Center(
+            child: ListTile(
+              leading: Icon(widget.goals[index].category.icon),
+              title: Text("${widget.goals[index].title}"),
+              trailing: Text("${widget.goals[index].budget}"),
+            ),
+          ),
+        );
       },
     );
   }
