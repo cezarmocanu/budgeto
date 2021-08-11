@@ -2,11 +2,9 @@ import 'package:budgeto_flutter/models/category.dart';
 import 'package:flutter/material.dart';
 
 class GoalFormPage extends StatefulWidget {
-  GoalFormPage({
-    Key? key,
-    required this.handleFormSubmit,
-    required this.categories,
-  }) : super(key: key);
+  GoalFormPage(
+      {Key? key, required this.handleFormSubmit, required this.categories})
+      : super(key: key);
 
   final Function(String, int, Category) handleFormSubmit;
   final List<Category> categories;
@@ -66,15 +64,34 @@ class _State extends State<GoalFormPage> {
               decoration: const InputDecoration(
                 hintText: 'Enter your goal target',
               ),
+              validator: (String? value) {
+                var budget = double.tryParse(value ?? '');
+
+                if (budget == null) {
+                  return 'Please enter a valid budget';
+                }
+
+                if (budget < 0) {
+                  return 'Cannot have negative budget';
+                }
+
+                if (budget == 0) {
+                  return 'Cannot have 0 budget';
+                }
+
+                return null;
+              },
               controller: goalBudgetController,
             ),
             renderDropdownMenu(),
             ElevatedButton(
               onPressed: () {
-                var title = goalTitleController.text;
-                var budget = int.parse(goalBudgetController.text);
-                widget.handleFormSubmit(title, budget, categoryDropdownValue);
-                Navigator.pushNamed(context, '/');
+                if (_form.currentState!.validate()) {
+                  var title = goalTitleController.text;
+                  var budget = int.parse(goalBudgetController.text);
+                  widget.handleFormSubmit(title, budget, categoryDropdownValue);
+                  Navigator.pushNamed(context, '/');
+                }
               },
               child: const Text('Submit'),
             ),
