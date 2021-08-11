@@ -1,12 +1,11 @@
-import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatefulWidget {
-  DashboardPage({Key? key, required this.title, required this.goals})
+  DashboardPage({Key? key, required this.planBudget, required this.goals})
       : super(key: key);
 
-  final String title;
+  final double planBudget;
   final List<Goal> goals;
 
   @override
@@ -14,8 +13,6 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboarState extends State<DashboardPage> {
-  int _budget = 9999;
-
   ListView renderItems() {
     return ListView.builder(
       padding: const EdgeInsets.all(8),
@@ -40,7 +37,12 @@ class _DashboarState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.title} $_budget"),
+        title: GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/budgetForm');
+          },
+          child: Text("Your budget ${widget.planBudget} \$"),
+        ),
       ),
       body: Center(
         child: renderItems(),

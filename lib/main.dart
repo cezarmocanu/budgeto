@@ -1,3 +1,4 @@
+import 'package:budgeto_flutter/pages/budget_form/budget_form_page.dart';
 import 'package:flutter/material.dart';
 import './pages/dashboard/dashboard_page.dart';
 import './pages/goal_form/goal_form_page.dart';
@@ -22,19 +23,35 @@ class _State extends State<MyApp> {
     Category('Travel', IconData(57453, fontFamily: 'MaterialIcons')),
     Category.withoutIcon('Bills')
   ];
+  double _planBudget = 999.9;
 
   void handleFormSubmit(String title, int budget, Category category) {
-    _goals.add(Goal(title, budget, category));
+    setState(() {
+      _planBudget -= budget;
+      _goals.add(Goal(title, budget, category));
+    });
+  }
+
+  void handleBudgetFormSubmit(double targetBudget) {
+    setState(() {
+      _planBudget = targetBudget;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/': (context) => DashboardPage(title: 'Your budget', goals: _goals),
+        '/': (context) => DashboardPage(
+              planBudget: _planBudget,
+              goals: _goals,
+            ),
         '/form': (context) => GoalFormPage(
               handleFormSubmit: handleFormSubmit,
               categories: _categories,
+            ),
+        '/budgetForm': (context) => BudgetFormPage(
+              handleFormSubmit: handleBudgetFormSubmit,
             ),
       },
     );
