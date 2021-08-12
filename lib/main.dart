@@ -17,18 +17,30 @@ class MyApp extends StatefulWidget {
 }
 
 class _State extends State<MyApp> {
-  List<Goal> _goals = [];
   List<Category> _categories = [
     Category('Food', IconData(57902, fontFamily: 'MaterialIcons')),
     Category('Travel', IconData(57453, fontFamily: 'MaterialIcons')),
     Category.withoutIcon('Bills')
   ];
+  List<Goal> _goals = [];
   double _planBudget = 999.9;
 
-  void handleFormSubmit(String title, int budget, Category category) {
+  void initState() {
     setState(() {
-      _planBudget -= budget;
-      _goals.add(Goal(title, budget, category));
+      _goals = [Goal('Fly to amsterdam', 1000, _categories[1], 250)];
+    });
+    super.initState();
+  }
+
+  void handleFormSubmit(
+    String title,
+    double budget,
+    Category category,
+    double allowance,
+  ) {
+    setState(() {
+      _planBudget -= allowance;
+      _goals.add(Goal(title, budget, category, allowance));
     });
   }
 
