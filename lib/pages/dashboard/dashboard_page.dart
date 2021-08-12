@@ -24,8 +24,20 @@ class _DashboarState extends State<DashboardPage> {
           child: Center(
             child: ListTile(
               leading: Icon(widget.goals[index].category.icon),
-              title: Text("${widget.goals[index].title}"),
-              trailing: Text("${widget.goals[index].budget}"),
+              title: Column(
+                children: [
+                  Text("${widget.goals[index].title}"),
+                  Text("Target : ${widget.goals[index].budget}"),
+                ],
+              ),
+              trailing: Column(
+                children: [
+                  Container(
+                    child: Text("+${widget.goals[index].allowance}"),
+                    color: Colors.deepPurple[100],
+                  ),
+                ],
+              ),
             ),
           ),
         );
