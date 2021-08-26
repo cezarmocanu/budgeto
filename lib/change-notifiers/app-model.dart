@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppModel extends ChangeNotifier {
   late List<Category> _categories;
   late List<Goal> _goals;
-  double income = 0;
+  double income = 874;
 
   AppModel() {
     _categories = [
