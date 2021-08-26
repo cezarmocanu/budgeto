@@ -1,4 +1,6 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/models/category.dart';
+import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,12 +8,20 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: _AppBarTitle(),
-        ),
-        body: Center(
-          child: _PlansListView(),
-        ));
+      appBar: AppBar(
+        title: _AppBarTitle(),
+      ),
+      body: Center(
+        child: _CategoriesListView(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, '/addGoal');
+        },
+        tooltip: 'Add new goal',
+        child: Icon(Icons.add),
+      ),
+    );
   }
 }
 
@@ -20,44 +30,51 @@ class _AppBarTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppModel>(
       builder: (context, app, child) => AppBar(
-        title: Text(app.title),
+        title: Text("Monthly income ${app.income} \$"),
       ),
     );
   }
 }
 
-class _PlansListView extends StatelessWidget {
+class _CategoriesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppModel>(
-      builder: (context, app, child) => ListView.builder(
+    return Consumer<AppModel>(builder: (context, app, child) {
+      List<Widget> expandableTiles = [];
+      for (var category in app.categoriesMap.keys) {
+        expandableTiles.add(
+          _CategoryExpandableTile(category, app.categoriesMap[category] ?? []),
+        );
+      }
+
+      return ListView(
         padding: const EdgeInsets.all(8),
-        itemCount: app.budgetPlans.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 50,
-            color: Colors.amber[(index % 10) * 100 + 100],
-            child: Center(
-              child: ListTile(
-                // leading: Icon(widget.goals[index].category.icon),
-                title: Column(
-                  children: [
-                    Text("${app.budgetPlans[index].title}"),
-                    // Text("Target : ${widget.goals[index].budget}"),
-                  ],
-                ),
-                // trailing: Column(
-                //   children: [
-                //     Container(
-                //       child: Text("+${widget.goals[index].allowance}"),
-                //       color: Colors.deepPurple[100],
-                //     ),
-                //   ],
-                // ),
+        children: expandableTiles,
+      );
+    });
+  }
+}
+
+class _CategoryExpandableTile extends StatelessWidget {
+  final Category _category;
+  final List<Goal> _goals;
+
+  _CategoryExpandableTile(this._category, this._goals);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.amber,
+      child: ExpansionTile(
+        title: Text(_category.name),
+        children: _goals
+            .map(
+              (goal) => Card(
+                color: Colors.blue,
+                child: ListTile(title: Text("${goal.title}")),
               ),
-            ),
-          );
-        },
+            )
+            .toList(),
       ),
     );
   }

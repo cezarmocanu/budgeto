@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Category {
-  String label = 'Unknown';
+  String name = 'Unknown';
   IconData icon = IconData(57522, fontFamily: 'MaterialIcons');
 
   Category.empty();
 
-  Category.withoutIcon(this.label);
+  Category.withoutIcon(this.name);
 
-  Category(this.label, this.icon);
+  Category(this.name, this.icon);
 }
