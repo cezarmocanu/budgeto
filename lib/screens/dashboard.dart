@@ -2,6 +2,7 @@ import 'package:budgeto_flutter/change-notifiers/app-model.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatelessWidget {
@@ -46,6 +47,13 @@ class Dashboard extends StatelessWidget {
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.all(30),
+                child: Container(
+                  child: _RingChart(),
+                  height: 200,
+                ),
+              ),
               Expanded(
                 child: _CategoriesListView(),
               ),
@@ -55,25 +63,41 @@ class Dashboard extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     Navigator.pushReplacementNamed(context, '/addGoal');
-        //   },
-        //   tooltip: 'Add new goal',
-        //   child: Icon(Icons.add),
-        // ),
       ),
     );
   }
 }
 
 //TODO add appbar in a better design
+
 class _AppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppModel>(
       builder: (context, app, child) => AppBar(
         title: Text("Monthly income ${app.income} \$"),
+      ),
+    );
+  }
+}
+
+class _RingChart extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AppModel>(
+      builder: (context, app, child) => PieChart(
+        dataMap: app.categoriesChartDataMap,
+        chartType: ChartType.ring,
+        ringStrokeWidth: 32,
+        colorList: [
+          Colors.orange.shade300,
+          Colors.amber.shade300,
+          Colors.pink.shade300,
+          Colors.purple.shade300,
+          Colors.cyan.shade300,
+          Colors.green.shade300,
+          Colors.indigo.shade300
+        ],
       ),
     );
   }
