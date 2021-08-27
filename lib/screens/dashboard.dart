@@ -138,8 +138,39 @@ class _CategoryExpandableTile extends StatelessWidget {
         children: _goals
             .map(
               (goal) => ListTile(
-                title: Text("${goal.title}"),
-              ),
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${goal.title}",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        'ETA: ${goal.expectedTime}',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black54,
+                        ),
+                      )
+                    ],
+                  ),
+                  trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${goal.allowance}/mo \$',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        'Target: ${goal.budget} \$',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black54,
+                        ),
+                      )
+                    ],
+                  )),
             )
             .toList(),
       ),
