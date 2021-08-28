@@ -1,3 +1,4 @@
+import 'package:budgeto_flutter/common/snackbar-content.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 class AppModel extends ChangeNotifier {
   late List<Category> _categories;
   late List<Goal> _goals;
-  double income = 874;
+  double income = 3201;
 
   AppModel() {
     _categories = [
@@ -51,10 +52,27 @@ class AppModel extends ChangeNotifier {
   }
 
   void addGoal(Goal goal) {
-    print(goal.title);
-    print(goal.category.name);
     _goals.add(goal);
     notifyListeners();
+  }
+
+  SnackbarContet fundGoal(Goal goal) {
+    if (income - goal.allowance >= 0) {
+      int index = _goals.indexWhere((element) => element.id == goal.id);
+      var targetGoal = _goals[index];
+      targetGoal.fundBudget(targetGoal.allowance);
+      income -= targetGoal.allowance;
+      notifyListeners();
+      return SnackbarContet(
+        message: 'Goal funded succesfully',
+        backgroundColor: Colors.lightGreen,
+      );
+    } else {
+      return SnackbarContet(
+        message: 'Not enough money',
+        backgroundColor: Colors.redAccent,
+      );
+    }
   }
 
   List<Category> get categories => _categories;
