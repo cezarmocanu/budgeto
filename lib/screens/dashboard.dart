@@ -139,47 +139,56 @@ class _CategoryExpandableTile extends StatelessWidget {
         children: _goals
             .map(
               (goal) => ListTile(
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${goal.title}",
+                leading: CircularProgressIndicator(
+                  value: goal.collected / goal.budget,
+                  backgroundColor: Colors.black26,
+                  color: Colors.pinkAccent,
+                ),
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${goal.title}",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      '${goal.collected} / ${goal.budget} \$',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black54,
+                      ),
+                    )
+                  ],
+                ),
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.pinkAccent,
+                      ),
+                      onPressed: () {
+                        SnackbarContet contet =
+                            Provider.of<AppModel>(context, listen: false)
+                                .fundGoal(goal);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(contet.message),
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: contet.backgroundColor,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        '${goal.allowance}/mo \$',
                         style: TextStyle(fontSize: 16),
                       ),
-                      Text(
-                        '${goal.collected} / ${goal.budget} \$',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                        ),
-                      )
-                    ],
-                  ),
-                  trailing: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          SnackbarContet contet =
-                              Provider.of<AppModel>(context, listen: false)
-                                  .fundGoal(goal);
-
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(contet.message),
-                              duration: const Duration(seconds: 2),
-                              backgroundColor: contet.backgroundColor,
-                            ),
-                          );
-                        },
-                        child: Text(
-                          '${goal.allowance}/mo \$',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      )
-                    ],
-                  )),
+                    )
+                  ],
+                ),
+              ),
             )
             .toList(),
       ),
