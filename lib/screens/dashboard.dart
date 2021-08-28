@@ -1,4 +1,5 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/common/snackbar-content.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
@@ -147,7 +148,7 @@ class _CategoryExpandableTile extends StatelessWidget {
                         style: TextStyle(fontSize: 16),
                       ),
                       Text(
-                        'ETA: ${goal.expectedTime}',
+                        '${goal.collected} / ${goal.budget} \$',
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black54,
@@ -156,17 +157,25 @@ class _CategoryExpandableTile extends StatelessWidget {
                     ],
                   ),
                   trailing: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        '${goal.allowance}/mo \$',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      Text(
-                        'Target: ${goal.budget} \$',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
+                      ElevatedButton(
+                        onPressed: () {
+                          SnackbarContet contet =
+                              Provider.of<AppModel>(context, listen: false)
+                                  .fundGoal(goal);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(contet.message),
+                              duration: const Duration(seconds: 2),
+                              backgroundColor: contet.backgroundColor,
+                            ),
+                          );
+                        },
+                        child: Text(
+                          '${goal.allowance}/mo \$',
+                          style: TextStyle(fontSize: 16),
                         ),
                       )
                     ],
