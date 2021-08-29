@@ -11,57 +11,57 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppModel>(
       builder: (context, app, child) => Scaffold(
-        backgroundColor: Color.fromARGB(255, 250, 250, 250),
-        body: Card(
-          margin: EdgeInsets.all(20),
+        body: SizedBox.expand(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 12, top: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${app.income} \$",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Monthly Income",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 12),
-                      child: ElevatedButton.icon(
-                        icon: Icon(Icons.add),
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/addGoal');
-                        },
-                        label: const Text('Add new goal'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue[200],
-                          onPrimary: Colors.blue[900],
+            children: [
+              Card(
+                margin: EdgeInsets.all(20),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${app.income} \$",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Monthly Income",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 12, bottom: 20),
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.add),
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(context, '/addGoal');
+                          },
+                          label: const Text('Add new goal'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue[200],
+                            onPrimary: Colors.blue[900],
+                          ),
                         ),
                       ),
-                    )
-                  ],
+                      _RingChart(),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(30),
-                child: Container(
-                  child: _RingChart(),
-                  height: 200,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
                 ),
               ),
               Expanded(
-                child: _CategoriesListView(),
-              ),
+                child: Card(
+                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  child: _CategoriesListView(),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+              )
             ],
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
           ),
         ),
       ),
@@ -70,7 +70,6 @@ class Dashboard extends StatelessWidget {
 }
 
 //TODO add appbar in a better design
-
 class _AppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
