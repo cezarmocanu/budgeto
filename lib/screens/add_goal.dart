@@ -29,7 +29,13 @@ class _State extends State<AddGoal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _AddGoalForm(handleCategoryChange, selectedCategory),
+      body: Card(
+        margin: EdgeInsets.all(20),
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: _AddGoalForm(handleCategoryChange, selectedCategory),
+        ),
+      ),
     );
   }
 }
@@ -62,18 +68,23 @@ class _AddGoalForm extends StatelessWidget {
     return Form(
       key: _form,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          _FormHeader(),
           _FormField(
-            hint: "What is the name of your goal?",
+            label: "Name",
+            hint: "ex: Electric guitar",
             controller: _controllers[_Field.name],
           ),
           _FormField(
-            hint: "What is the target budget for this goal?",
+            label: "Target",
+            hint: "ex: 350\$",
             controller: _controllers[_Field.budget],
             suffix: '\$',
           ),
           _FormField(
-            hint: "How much are you going to spend on it each month?",
+            label: "Allowance",
+            hint: "ex: 50\$ (per month)",
             controller: _controllers[_Field.allowance],
             suffix: '\$',
           ),
@@ -96,7 +107,52 @@ class _AddGoalForm extends StatelessWidget {
               // }
             },
             child: const Text('Add Goal'),
+            style: ElevatedButton.styleFrom(
+                minimumSize: Size(double.infinity, 40),
+                primary: Colors.pinkAccent),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FormHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+              flex: 1,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Ink(
+                  decoration: const ShapeDecoration(
+                    color: Colors.pinkAccent,
+                    shape: CircleBorder(),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/');
+                    },
+                    icon: Icon(Icons.arrow_back),
+                    color: Colors.white,
+                  ),
+                ),
+              )),
+          Expanded(
+            flex: 2,
+            child: Text(
+              "Set your goal",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -105,15 +161,39 @@ class _AddGoalForm extends StatelessWidget {
 
 class _FormField extends StatelessWidget {
   final String hint;
+  final String label;
   final TextEditingController controller;
   final String? suffix;
 
-  _FormField({required this.hint, required this.controller, this.suffix});
+  _FormField({
+    required this.hint,
+    required this.controller,
+    this.suffix,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      decoration: InputDecoration(hintText: hint, suffix: Text(suffix ?? '')),
+      decoration: InputDecoration(
+        hintText: hint,
+        suffix: Text(suffix ?? ''),
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.pinkAccent),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.black12,
+            width: 1.0,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.pinkAccent,
+            width: 2.0,
+          ),
+        ),
+      ),
       controller: controller,
     );
   }
@@ -135,12 +215,30 @@ class _CategoryDropdown extends StatelessWidget {
                 child: Text('${category.name}'),
               ))
           .toList();
-      return DropdownButton<Category>(
+      return DropdownButtonFormField<Category>(
+        isExpanded: true,
         value: selectedCategory,
         onChanged: (Category? newValue) {
           handleCategoryChange(newValue ?? Category.empty());
         },
         items: items,
+        decoration: InputDecoration(
+          labelText: "Category",
+          labelStyle: TextStyle(color: Colors.pinkAccent),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black12,
+              width: 1.0,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.pinkAccent,
+              width: 2.0,
+            ),
+          ),
+        ),
       );
     });
   }
