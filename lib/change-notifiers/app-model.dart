@@ -76,6 +76,4 @@ class AppModel extends ChangeNotifier {
   }
 
   List<Category> get categories => _categories;
-
-  String title = "hello form app model";
 }

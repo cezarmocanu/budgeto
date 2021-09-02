@@ -1,3 +1,4 @@
+import 'package:budgeto_flutter/constants/strings.dart';
 import 'package:budgeto_flutter/dashboard-tabs/goals-tab.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class Dashboard extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              "Goals",
+              t(LabelsEnum.goals),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -33,7 +34,7 @@ class Dashboard extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              "Expenses",
+              t(LabelsEnum.expenses),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -51,7 +52,7 @@ class Dashboard extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              "Profile",
+              t(LabelsEnum.profile),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),

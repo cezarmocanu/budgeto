@@ -1,5 +1,6 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
-import 'package:budgeto_flutter/constants.dart';
+import 'package:budgeto_flutter/constants/routes.dart';
+import 'package:budgeto_flutter/constants/strings.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:provider/provider.dart';
@@ -73,19 +74,19 @@ class _AddGoalForm extends StatelessWidget {
         children: [
           _FormHeader(),
           _FormField(
-            label: "Name",
-            hint: "ex: Electric guitar",
+            label: t(LabelsEnum.name),
+            hint: t(LabelsEnum.exampleElectricGuitar),
             controller: _controllers[_Field.name],
           ),
           _FormField(
-            label: "Target",
-            hint: "ex: 350\$",
+            label: t(LabelsEnum.target),
+            hint: t(LabelsEnum.exampleTargetGoal),
             controller: _controllers[_Field.budget],
             suffix: '\$',
           ),
           _FormField(
-            label: "Allowance",
-            hint: "ex: 50\$ (per month)",
+            label: t(LabelsEnum.allowance),
+            hint: t(LabelsEnum.exampleAllowance),
             controller: _controllers[_Field.allowance],
             suffix: '\$',
           ),
@@ -148,7 +149,7 @@ class _FormHeader extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              "Set your goal",
+              t(LabelsEnum.setYourGoal),
               style: TextStyle(
                 fontSize: 20,
               ),
@@ -224,7 +225,7 @@ class _CategoryDropdown extends StatelessWidget {
         },
         items: items,
         decoration: InputDecoration(
-          labelText: "Category",
+          labelText: t(LabelsEnum.category),
           labelStyle: TextStyle(color: Colors.pinkAccent),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           enabledBorder: OutlineInputBorder(
