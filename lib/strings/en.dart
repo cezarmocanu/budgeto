@@ -5,6 +5,7 @@ const Map<LabelsEnum, String> EN = {
   LabelsEnum.addCategory: 'Add Category',
   LabelsEnum.allowance: 'Allowance',
   LabelsEnum.category: 'Category',
+  LabelsEnum.color: 'Color',
   LabelsEnum.customizeYourCategory: 'Customize your category',
   LabelsEnum.customizeYourGoal: 'Customize your goal',
   LabelsEnum.expenses: 'Expenses',

@@ -8,6 +8,7 @@ enum LabelsEnum {
   addCategory,
   allowance,
   category,
+  color,
   customizeYourCategory,
   customizeYourGoal,
   english,
