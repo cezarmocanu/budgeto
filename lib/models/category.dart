@@ -7,6 +7,11 @@ class Category {
 
   Category.empty();
 
+  Category.from(Category category) {
+    this.name = category.name;
+    this.icon = category.icon;
+  }
+
   Category.withoutIcon(this.name);
 
   Category(this.name, this.icon);

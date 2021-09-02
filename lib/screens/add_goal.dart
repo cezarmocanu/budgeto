@@ -1,33 +1,14 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/common/form/styled-form-field.dart';
+import 'package:budgeto_flutter/common/form/styled-form-header.dart';
 import 'package:budgeto_flutter/constants/routes.dart';
-import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
-import 'package:provider/provider.dart';
+import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AddGoal extends StatefulWidget {
-  AddGoal({Key? key});
-
-  @override
-  _State createState() => _State();
-}
-
-class _State extends State<AddGoal> {
-  Category selectedCategory = Category.empty();
-  void handleCategoryChange(Category category) {
-    setState(() {
-      selectedCategory = category;
-    });
-  }
-
-  @override
-  void initState() {
-    selectedCategory =
-        Provider.of<AppModel>(context, listen: false).categories[0];
-    super.initState();
-  }
-
+class AddGoal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,35 +16,53 @@ class _State extends State<AddGoal> {
         margin: EdgeInsets.all(20),
         child: Padding(
           padding: EdgeInsets.all(20),
-          child: _AddGoalForm(handleCategoryChange, selectedCategory),
+          child: _AddGoalForm(),
         ),
       ),
     );
   }
 }
 
-enum _Field { name, budget, allowance }
+class _AddGoalForm extends StatefulWidget {
+  @override
+  _FormState createState() => _FormState();
+}
 
-class _AddGoalForm extends StatelessWidget {
-  final Category selectedCategory;
-  final void Function(Category) handleCategoryChange;
-  _AddGoalForm(this.handleCategoryChange, this.selectedCategory);
-
+class _FormState extends State<_AddGoalForm> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
-  final _controllers = Map<_Field, dynamic>.fromIterable(
-    _Field.values,
-    key: (field) => field,
-    value: (_) => TextEditingController(),
-  );
+  final Goal _goal = Goal.empty();
 
-  //TODO abstract into an util
-  Map<_Field, dynamic> getControllerValues() {
-    return {
-      _Field.name: _controllers[_Field.name].text,
-      _Field.budget: double.tryParse(_controllers[_Field.budget].text) ?? 0,
-      _Field.allowance:
-          double.tryParse(_controllers[_Field.allowance].text) ?? 0,
-    };
+  @override
+  void initState() {
+    _goal.category = Provider.of<AppModel>(
+      context,
+      listen: false,
+    ).categories[0];
+    super.initState();
+  }
+
+  void _handleNameSave(String? value) {
+    setState(() {
+      _goal.name = value ?? '';
+    });
+  }
+
+  void _handleBugetSave(String? value) {
+    setState(() {
+      _goal.budget = double.tryParse(value ?? '') ?? -1;
+    });
+  }
+
+  void _handleAllowanceSave(String? value) {
+    setState(() {
+      _goal.allowance = double.tryParse(value ?? '') ?? -1;
+    });
+  }
+
+  void _handleCategoryChange(Category? value) {
+    setState(() {
+      _goal.category = value!;
+    });
   }
 
   @override
@@ -74,39 +73,41 @@ class _AddGoalForm extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _FormHeader(),
-          _FormField(
-            label: t(LabelsEnum.name, intl),
-            hint: t(LabelsEnum.exampleElectricGuitar, intl),
-            controller: _controllers[_Field.name],
+          StyledFormHeader(
+            title: t(LabelsEnum.customizeYourGoal, intl),
+            backRoute: RoutesEnum.Dashboard,
           ),
-          _FormField(
-            label: t(LabelsEnum.target, intl),
-            hint: t(LabelsEnum.exampleTargetGoal, intl),
-            controller: _controllers[_Field.budget],
-            suffix: '\$',
-          ),
-          _FormField(
-            label: t(LabelsEnum.allowance, intl),
-            hint: t(LabelsEnum.exampleAllowance, intl),
-            controller: _controllers[_Field.allowance],
-            suffix: '\$',
-          ),
-          _CategoryDropdown(
-            handleCategoryChange: handleCategoryChange,
-            selectedCategory: selectedCategory,
+          Expanded(
+            child: Column(
+              children: [
+                StyledFormField(
+                  label: t(LabelsEnum.name, intl),
+                  hint: t(LabelsEnum.exampleElectricGuitar, intl),
+                  onSaved: _handleNameSave,
+                ),
+                StyledFormField(
+                  label: t(LabelsEnum.target, intl),
+                  hint: t(LabelsEnum.exampleTargetGoal, intl),
+                  onSaved: _handleBugetSave,
+                ),
+                StyledFormField(
+                  label: t(LabelsEnum.allowance, intl),
+                  hint: t(LabelsEnum.exampleAllowance, intl),
+                  onSaved: _handleAllowanceSave,
+                ),
+                _CategoryDropdown(
+                  handleCategoryChange: _handleCategoryChange,
+                  selectedCategory: _goal.category,
+                ),
+              ],
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               // if (_form.currentState!.validate()) {
-              var values = getControllerValues();
-              var app = context.read<AppModel>();
-              app.addGoal(Goal(
-                values[_Field.name],
-                values[_Field.budget],
-                selectedCategory,
-                values[_Field.allowance],
-              ));
+              _form.currentState!.save();
+              print(_goal);
+              context.read<AppModel>().addGoal(Goal.from(_goal));
               goTo(context, RoutesEnum.Dashboard);
               // }
             },
@@ -123,95 +124,11 @@ class _AddGoalForm extends StatelessWidget {
   }
 }
 
-//TODO: refactor in a separate component
-class _FormHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Ink(
-                decoration: const ShapeDecoration(
-                  color: Colors.pinkAccent,
-                  shape: CircleBorder(),
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    goTo(context, RoutesEnum.Dashboard);
-                  },
-                  icon: Icon(Icons.arrow_back),
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              t(LabelsEnum.customizeYourGoal, intl),
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-//TODO Abstract into a new component
-class _FormField extends StatelessWidget {
-  final String hint;
-  final String label;
-  final TextEditingController controller;
-  final String? suffix;
-
-  _FormField({
-    required this.hint,
-    required this.controller,
-    this.suffix,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hint,
-        suffix: Text(suffix ?? ''),
-        labelText: label,
-        labelStyle: TextStyle(color: Colors.pinkAccent),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black12,
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.pinkAccent,
-            width: 2.0,
-          ),
-        ),
-      ),
-      controller: controller,
-    );
-  }
-}
-
 class _CategoryDropdown extends StatelessWidget {
-  _CategoryDropdown(
-      {required this.handleCategoryChange, this.selectedCategory});
+  _CategoryDropdown({
+    required this.handleCategoryChange,
+    required this.selectedCategory,
+  });
 
   final void Function(Category) handleCategoryChange;
   final Category? selectedCategory;
@@ -221,10 +138,12 @@ class _CategoryDropdown extends StatelessWidget {
     LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
     return Consumer<AppModel>(builder: (context, app, child) {
       var items = app.categories
-          .map((category) => DropdownMenuItem<Category>(
-                value: category,
-                child: Text('${category.name}'),
-              ))
+          .map(
+            (category) => DropdownMenuItem<Category>(
+              value: category,
+              child: Text('${category.name}'),
+            ),
+          )
           .toList();
       return DropdownButtonFormField<Category>(
         isExpanded: true,

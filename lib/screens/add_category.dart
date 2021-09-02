@@ -1,4 +1,6 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/common/form/styled-form-field.dart';
+import 'package:budgeto_flutter/common/form/styled-form-header.dart';
 import 'package:budgeto_flutter/constants/routes.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/strings/strings.dart';
@@ -20,48 +22,49 @@ class AddCategory extends StatelessWidget {
   }
 }
 
-enum _Field {
-  name,
+class _AddCategoryForm extends StatefulWidget {
+  @override
+  _FormState createState() => _FormState();
 }
 
-class _AddCategoryForm extends StatelessWidget {
+class _FormState extends State<_AddCategoryForm> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
+  final Category _category = Category.empty();
+
+  void _handleNameSave(String? value) {
+    setState(() {
+      _category.name = value ?? '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
-
-    final _controllers = Map<_Field, dynamic>.fromIterable(
-      _Field.values,
-      key: (field) => field,
-      value: (_) => TextEditingController(),
-    );
-
-    //TODO abstract into an util
-    Map<_Field, dynamic> getControllerValues() {
-      return {_Field.name: _controllers[_Field.name].text};
-    }
-
     return Form(
+      key: _form,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _FormHeader(),
-          _FormField(
-            label: t(LabelsEnum.name, intl),
-            hint: t(LabelsEnum.exampleNewCategory, intl),
-            controller: _controllers[_Field.name],
+          StyledFormHeader(
+            title: t(LabelsEnum.customizeYourCategory, intl),
+            backRoute: RoutesEnum.Dashboard,
+          ),
+          Expanded(
+            child: Column(
+              children: [
+                StyledFormField(
+                  label: t(LabelsEnum.name, intl),
+                  hint: t(LabelsEnum.exampleNewCategory, intl),
+                  onSaved: _handleNameSave,
+                ),
+              ],
+            ),
           ),
           ElevatedButton(
             onPressed: () {
               // if (_form.currentState!.validate()) {
-              var values = getControllerValues();
-              var app = context.read<AppModel>();
-              app.addCategory(
-                Category.withoutIcon(
-                  values[_Field.name],
-                ),
-              );
+              _form.currentState!.save();
+              context.read<AppModel>().addCategory(Category.from(_category));
               goTo(context, RoutesEnum.Dashboard);
               // }
             },
@@ -74,92 +77,6 @@ class _AddCategoryForm extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-//TODO replace with abstraction
-class _FormHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Ink(
-                decoration: const ShapeDecoration(
-                  color: Colors.pinkAccent,
-                  shape: CircleBorder(),
-                ),
-                child: IconButton(
-                  onPressed: () {
-                    goTo(context, RoutesEnum.Dashboard);
-                  },
-                  icon: Icon(Icons.arrow_back),
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              t(LabelsEnum.customizeYourCategory, intl),
-              style: TextStyle(
-                fontSize: 20,
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-//TODO Abstract into a new component
-class _FormField extends StatelessWidget {
-  final String hint;
-  final String label;
-  final TextEditingController controller;
-  final String? suffix;
-
-  _FormField({
-    required this.hint,
-    required this.controller,
-    this.suffix,
-    required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextFormField(
-      decoration: InputDecoration(
-        hintText: hint,
-        suffix: Text(suffix ?? ''),
-        labelText: label,
-        labelStyle: TextStyle(color: Colors.pinkAccent),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.black12,
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.pinkAccent,
-            width: 2.0,
-          ),
-        ),
-      ),
-      controller: controller,
     );
   }
 }
