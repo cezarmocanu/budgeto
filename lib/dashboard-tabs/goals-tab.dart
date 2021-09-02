@@ -166,7 +166,7 @@ class _CategoryExpandableTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${goal.title}",
+                      "${goal.name}",
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
