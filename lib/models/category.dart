@@ -1,4 +1,4 @@
-import 'package:budgeto_flutter/constants/strings.dart';
+import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:flutter/material.dart';
 
 class Category {

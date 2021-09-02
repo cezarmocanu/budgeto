@@ -1,21 +1,6 @@
-enum LabelsEnum {
-  addGoal,
-  allowance,
-  category,
-  expenses,
-  exampleElectricGuitar,
-  exampleTargetGoal,
-  exampleAllowance,
-  goals,
-  monthlyIncome,
-  name,
-  profile,
-  setYourGoal,
-  target,
-  unknown,
-}
+import 'package:budgeto_flutter/strings/strings.dart';
 
-const Map<LabelsEnum, String> _LABELS_MAP = {
+const Map<LabelsEnum, String> EN = {
   LabelsEnum.addGoal: 'Add Goal',
   LabelsEnum.allowance: 'Allowance',
   LabelsEnum.category: 'Category',
@@ -27,15 +12,8 @@ const Map<LabelsEnum, String> _LABELS_MAP = {
   LabelsEnum.monthlyIncome: 'Monthly Income',
   LabelsEnum.name: 'Name',
   LabelsEnum.profile: 'Profile',
-  LabelsEnum.setYourGoal: 'SetYourGoal',
+  LabelsEnum.setYourGoal: 'Set Your Goal',
+  LabelsEnum.selectLanguage: 'Select Language',
   LabelsEnum.target: 'Target',
   LabelsEnum.unknown: 'Unknown'
 };
-
-String t(LabelsEnum label) {
-  if (!_LABELS_MAP.containsKey(label)) {
-    return 'Label not found!';
-  }
-
-  return _LABELS_MAP[label]!;
-}

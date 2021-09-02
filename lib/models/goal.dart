@@ -1,4 +1,4 @@
-import 'package:budgeto_flutter/constants/strings.dart';
+import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:intl/intl.dart';
 

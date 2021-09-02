@@ -1,6 +1,6 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
 import 'package:budgeto_flutter/constants/routes.dart';
-import 'package:budgeto_flutter/constants/strings.dart';
+import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:provider/provider.dart';
@@ -67,6 +67,7 @@ class _AddGoalForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
     return Form(
       key: _form,
       child: Column(
@@ -74,19 +75,19 @@ class _AddGoalForm extends StatelessWidget {
         children: [
           _FormHeader(),
           _FormField(
-            label: t(LabelsEnum.name),
-            hint: t(LabelsEnum.exampleElectricGuitar),
+            label: t(LabelsEnum.name, intl),
+            hint: t(LabelsEnum.exampleElectricGuitar, intl),
             controller: _controllers[_Field.name],
           ),
           _FormField(
-            label: t(LabelsEnum.target),
-            hint: t(LabelsEnum.exampleTargetGoal),
+            label: t(LabelsEnum.target, intl),
+            hint: t(LabelsEnum.exampleTargetGoal, intl),
             controller: _controllers[_Field.budget],
             suffix: '\$',
           ),
           _FormField(
-            label: t(LabelsEnum.allowance),
-            hint: t(LabelsEnum.exampleAllowance),
+            label: t(LabelsEnum.allowance, intl),
+            hint: t(LabelsEnum.exampleAllowance, intl),
             controller: _controllers[_Field.allowance],
             suffix: '\$',
           ),
@@ -108,7 +109,9 @@ class _AddGoalForm extends StatelessWidget {
               goTo(context, RoutesEnum.Dashboard);
               // }
             },
-            child: const Text('Add Goal'),
+            child: Text(
+              t(LabelsEnum.addGoal, intl),
+            ),
             style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 40),
                 primary: Colors.pinkAccent),
@@ -122,6 +125,7 @@ class _AddGoalForm extends StatelessWidget {
 class _FormHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: Row(
@@ -149,7 +153,7 @@ class _FormHeader extends StatelessWidget {
           Expanded(
             flex: 2,
             child: Text(
-              t(LabelsEnum.setYourGoal),
+              t(LabelsEnum.setYourGoal, intl),
               style: TextStyle(
                 fontSize: 20,
               ),
@@ -210,6 +214,7 @@ class _CategoryDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
     return Consumer<AppModel>(builder: (context, app, child) {
       var items = app.categories
           .map((category) => DropdownMenuItem<Category>(
@@ -225,7 +230,7 @@ class _CategoryDropdown extends StatelessWidget {
         },
         items: items,
         decoration: InputDecoration(
-          labelText: t(LabelsEnum.category),
+          labelText: t(LabelsEnum.category, intl),
           labelStyle: TextStyle(color: Colors.pinkAccent),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           enabledBorder: OutlineInputBorder(

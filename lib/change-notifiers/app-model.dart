@@ -1,11 +1,13 @@
 import 'package:budgeto_flutter/common/snackbar-content.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
+import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:flutter/material.dart';
 
 class AppModel extends ChangeNotifier {
   late List<Category> _categories;
   late List<Goal> _goals;
+  LanguageEnum _intl = LanguageEnum.ro;
   double income = 3201;
 
   AppModel() {
@@ -49,6 +51,13 @@ class AppModel extends ChangeNotifier {
             .where((goal) => goal.category == category)
             .fold(0, (sum, goal) => sum + goal.allowance)));
     return dataMap;
+  }
+
+  LanguageEnum get intl => _intl;
+
+  set intl(LanguageEnum language) {
+    _intl = language;
+    notifyListeners();
   }
 
   void addGoal(Goal goal) {
