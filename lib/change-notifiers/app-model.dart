@@ -60,6 +60,11 @@ class AppModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addCategory(Category category) {
+    _categories.add(category);
+    notifyListeners();
+  }
+
   void addGoal(Goal goal) {
     _goals.add(goal);
     notifyListeners();

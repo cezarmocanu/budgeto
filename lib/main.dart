@@ -1,5 +1,6 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
 import 'package:budgeto_flutter/constants/routes.dart';
+import 'package:budgeto_flutter/screens/add_category.dart';
 import 'package:budgeto_flutter/screens/add_goal.dart';
 import 'package:budgeto_flutter/screens/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         ROUTES_MAP[RoutesEnum.Dashboard]!: (context) => Dashboard(),
         ROUTES_MAP[RoutesEnum.AddGoal]!: (context) => AddGoal(),
+        ROUTES_MAP[RoutesEnum.AddCategory]!: (context) => AddCategory(),
       },
     );
   }
