@@ -1,4 +1,5 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/constants.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:provider/provider.dart';
@@ -103,7 +104,7 @@ class _AddGoalForm extends StatelessWidget {
                 selectedCategory,
                 values[_Field.allowance],
               ));
-              Navigator.pushReplacementNamed(context, '/');
+              goTo(context, RoutesEnum.Dashboard);
               // }
             },
             child: const Text('Add Goal'),
@@ -137,7 +138,7 @@ class _FormHeader extends StatelessWidget {
                   ),
                   child: IconButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/');
+                      goTo(context, RoutesEnum.Dashboard);
                     },
                     icon: Icon(Icons.arrow_back),
                     color: Colors.white,

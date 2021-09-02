@@ -1,5 +1,6 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
 import 'package:budgeto_flutter/common/snackbar-content.dart';
+import 'package:budgeto_flutter/constants.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class GoalsTab extends StatelessWidget {
                         child: ElevatedButton.icon(
                           icon: Icon(Icons.add),
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/addGoal');
+                            goTo(context, RoutesEnum.AddGoal);
                           },
                           label: const Text('Add new goal'),
                           style: ElevatedButton.styleFrom(
