@@ -5,11 +5,15 @@ import 'en.dart';
 
 enum LabelsEnum {
   addGoal,
+  addCategory,
   allowance,
   category,
+  customizeYourCategory,
+  customizeYourGoal,
   english,
   expenses,
   exampleElectricGuitar,
+  exampleNewCategory,
   exampleTargetGoal,
   exampleAllowance,
   goals,

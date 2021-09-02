@@ -56,6 +56,7 @@ class _AddGoalForm extends StatelessWidget {
     value: (_) => TextEditingController(),
   );
 
+  //TODO abstract into an util
   Map<_Field, dynamic> getControllerValues() {
     return {
       _Field.name: _controllers[_Field.name].text,
@@ -71,7 +72,7 @@ class _AddGoalForm extends StatelessWidget {
     return Form(
       key: _form,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _FormHeader(),
           _FormField(
@@ -122,6 +123,7 @@ class _AddGoalForm extends StatelessWidget {
   }
 }
 
+//TODO: refactor in a separate component
 class _FormHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -133,27 +135,28 @@ class _FormHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-              flex: 1,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Ink(
-                  decoration: const ShapeDecoration(
-                    color: Colors.pinkAccent,
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      goTo(context, RoutesEnum.Dashboard);
-                    },
-                    icon: Icon(Icons.arrow_back),
-                    color: Colors.white,
-                  ),
+            flex: 1,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.pinkAccent,
+                  shape: CircleBorder(),
                 ),
-              )),
+                child: IconButton(
+                  onPressed: () {
+                    goTo(context, RoutesEnum.Dashboard);
+                  },
+                  icon: Icon(Icons.arrow_back),
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Text(
-              t(LabelsEnum.setYourGoal, intl),
+              t(LabelsEnum.customizeYourGoal, intl),
               style: TextStyle(
                 fontSize: 20,
               ),
@@ -165,6 +168,7 @@ class _FormHeader extends StatelessWidget {
   }
 }
 
+//TODO Abstract into a new component
 class _FormField extends StatelessWidget {
   final String hint;
   final String label;

@@ -62,7 +62,30 @@ class GoalsTab extends StatelessWidget {
               Expanded(
                 child: Card(
                   margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: _CategoriesListView(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 12, bottom: 20, left: 20),
+                        child: ElevatedButton.icon(
+                          icon: Icon(Icons.add),
+                          onPressed: () {
+                            goTo(context, RoutesEnum.AddCategory);
+                          },
+                          label: Text(
+                            t(LabelsEnum.addCategory, intl),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.pinkAccent[200],
+                            onPrimary: Colors.white,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: _CategoriesListView(),
+                      ),
+                    ],
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
