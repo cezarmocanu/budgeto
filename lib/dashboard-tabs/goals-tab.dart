@@ -1,7 +1,7 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
 import 'package:budgeto_flutter/common/snackbar-content.dart';
 import 'package:budgeto_flutter/constants/routes.dart';
-import 'package:budgeto_flutter/constants/strings.dart';
+import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 class GoalsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
     return Consumer<AppModel>(
       builder: (context, app, child) => Scaffold(
         backgroundColor: Colors.white10,
@@ -31,7 +32,7 @@ class GoalsTab extends StatelessWidget {
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        t(LabelsEnum.monthlyIncome),
+                        t(LabelsEnum.monthlyIncome, intl),
                         style: TextStyle(fontSize: 12),
                       ),
                       Padding(
@@ -41,7 +42,9 @@ class GoalsTab extends StatelessWidget {
                           onPressed: () {
                             goTo(context, RoutesEnum.AddGoal);
                           },
-                          label: const Text('Add new goal'),
+                          label: Text(
+                            t(LabelsEnum.addGoal, intl),
+                          ),
                           style: ElevatedButton.styleFrom(
                             primary: Colors.pinkAccent[200],
                             onPrimary: Colors.white,

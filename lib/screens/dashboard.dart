@@ -1,10 +1,14 @@
-import 'package:budgeto_flutter/constants/strings.dart';
+import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/dashboard-tabs/profile-tab.dart';
+import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:budgeto_flutter/dashboard-tabs/goals-tab.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
     List<Tab> _tabs = <Tab>[
       Tab(
         child: Container(
@@ -16,7 +20,7 @@ class Dashboard extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              t(LabelsEnum.goals),
+              t(LabelsEnum.goals, intl),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -34,7 +38,7 @@ class Dashboard extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              t(LabelsEnum.expenses),
+              t(LabelsEnum.expenses, intl),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -52,7 +56,7 @@ class Dashboard extends StatelessWidget {
           child: Align(
             alignment: Alignment.center,
             child: Text(
-              t(LabelsEnum.profile),
+              t(LabelsEnum.profile, intl),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -94,7 +98,7 @@ class Dashboard extends StatelessWidget {
         body: TabBarView(children: [
           GoalsTab(),
           Text("Welcome to expenses page"),
-          Text("Welcome to profile page"),
+          ProfileTab(),
         ]),
       ),
     );
