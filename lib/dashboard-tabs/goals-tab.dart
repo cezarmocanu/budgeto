@@ -1,6 +1,7 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
 import 'package:budgeto_flutter/common/snackbar-content.dart';
-import 'package:budgeto_flutter/constants.dart';
+import 'package:budgeto_flutter/constants/routes.dart';
+import 'package:budgeto_flutter/constants/strings.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +25,13 @@ class GoalsTab extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
+                        //TODO make label dependant on currency
                         "${app.income} \$",
                         style: TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Monthly Income",
+                        t(LabelsEnum.monthlyIncome),
                         style: TextStyle(fontSize: 12),
                       ),
                       Padding(
@@ -66,18 +68,6 @@ class GoalsTab extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-//TODO add appbar in a better design
-class _AppBarTitle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AppModel>(
-      builder: (context, app, child) => AppBar(
-        title: Text("Monthly income ${app.income} \$"),
       ),
     );
   }

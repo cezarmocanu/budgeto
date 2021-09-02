@@ -1,9 +1,10 @@
+import 'package:budgeto_flutter/constants/strings.dart';
 import 'package:budgeto_flutter/models/category.dart';
 import 'package:intl/intl.dart';
 
 class Goal {
   int id = 0;
-  String title = 'Default title';
+  String title = t(LabelsEnum.unknown);
   double budget = 0;
   Category category = Category.empty();
   double allowance = 0;

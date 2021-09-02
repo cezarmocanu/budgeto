@@ -1,5 +1,5 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
-import 'package:budgeto_flutter/constants.dart';
+import 'package:budgeto_flutter/constants/routes.dart';
 import 'package:budgeto_flutter/screens/add_goal.dart';
 import 'package:budgeto_flutter/screens/dashboard.dart';
 import 'package:flutter/material.dart';
