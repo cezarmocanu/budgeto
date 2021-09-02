@@ -5,6 +5,7 @@ const Map<LabelsEnum, String> RO = {
   LabelsEnum.addCategory: 'Adaugă o categorie',
   LabelsEnum.allowance: 'Investiție lunară',
   LabelsEnum.category: 'Categorie',
+  LabelsEnum.color: 'Culoare',
   LabelsEnum.customizeYourCategory: 'Configurează categoria',
   LabelsEnum.customizeYourGoal: 'Configurează dorința',
   LabelsEnum.expenses: 'Cheltuieli',

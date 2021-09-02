@@ -152,14 +152,14 @@ class _CategoryExpandableTile extends StatelessWidget {
       color: Colors.white,
       child: ExpansionTile(
         title: Text(_category.name),
-        leading: Icon(_category.icon, color: Colors.pink),
+        leading: Icon(_category.icon, color: _category.color),
         children: _goals
             .map(
               (goal) => ListTile(
                 leading: CircularProgressIndicator(
                   value: goal.collected / goal.budget,
                   backgroundColor: Colors.black26,
-                  color: Colors.pinkAccent,
+                  color: _category.color,
                 ),
                 title: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
