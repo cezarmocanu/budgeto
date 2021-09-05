@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class AppModel extends ChangeNotifier {
   late List<Category> _categories;
   late List<Goal> _goals;
-  LanguageEnum _intl = LanguageEnum.ro;
+  LanguageEnum _intl = LanguageEnum.en;
   double income = 3201;
 
   AppModel() {
