@@ -6,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatelessWidget {
+  static const APPBAR_HEIGHT = 64.0;
+  static const TABBAR_HEIGHT = 32.0;
+  static const TABBAR_PADDING = 4.0;
+
   @override
   Widget build(BuildContext context) {
     LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
@@ -66,40 +70,86 @@ class Dashboard extends StatelessWidget {
       )
     ];
 
-    return DefaultTabController(
-      length: _tabs.length,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 58,
-          backgroundColor: Colors.white10,
-          bottom: PreferredSize(
-            preferredSize: Size(0, 0),
-            child: Container(
-              height: 38,
+    return Consumer<AppModel>(
+      builder: (context, app, child) => DefaultTabController(
+        length: _tabs.length,
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            toolbarHeight: TABBAR_HEIGHT + 2 * TABBAR_PADDING + APPBAR_HEIGHT,
+            // centerTitle: false,
+            backgroundColor: Colors.white10,
+            title: Container(
+              alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.all(2),
-                child: TabBar(
-                  isScrollable: true,
-                  indicatorPadding: EdgeInsets.zero,
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(width: 1, color: Colors.pinkAccent)),
-                  indicatorSize: TabBarIndicatorSize.label,
-                  labelColor: Colors.black,
-                  unselectedLabelColor: Colors.black54,
-                  tabs: _tabs,
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "Current budget",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text("${app.income} / ${app.income} \$"),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "For the next",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text("6 days"),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              color: Colors.pinkAccent,
+              width: double.infinity,
+              height: APPBAR_HEIGHT,
+            ),
+            titleSpacing: 0,
+            bottom: PreferredSize(
+              preferredSize:
+                  Size(double.infinity, TABBAR_HEIGHT + 2 * TABBAR_PADDING),
+              child: Container(
+                // color: Colors.whi,
+                height: TABBAR_HEIGHT + 2 * TABBAR_PADDING,
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: TABBAR_PADDING, bottom: TABBAR_PADDING),
+                  child: TabBar(
+                    isScrollable: true,
+                    indicatorPadding: EdgeInsets.zero,
+                    indicator: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        border: Border.all(width: 1, color: Colors.pinkAccent)),
+                    indicatorSize: TabBarIndicatorSize.label,
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.black54,
+                    tabs: _tabs,
+                  ),
                 ),
               ),
             ),
           ),
+          body: TabBarView(
+            children: [
+              GoalsTab(),
+              Text("Welcome to expenses page"),
+              ProfileTab(),
+            ],
+          ),
         ),
-        body: TabBarView(children: [
-          GoalsTab(),
-          Text("Welcome to expenses page"),
-          ProfileTab(),
-        ]),
       ),
     );
   }
