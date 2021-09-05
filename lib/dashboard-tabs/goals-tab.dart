@@ -12,55 +12,22 @@ class GoalsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
+
     return Consumer<AppModel>(
-      builder: (context, app, child) => Scaffold(
-        backgroundColor: Colors.white10,
-        body: SizedBox.expand(
-          child: Column(
-            children: [
-              Card(
-                margin: EdgeInsets.all(20),
-                child: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        //TODO make label dependant on currency
-                        "${app.income} \$",
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        t(LabelsEnum.monthlyIncome, intl),
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 12, bottom: 20),
-                        child: ElevatedButton.icon(
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                            goTo(context, RoutesEnum.AddGoal);
-                          },
-                          label: Text(
-                            t(LabelsEnum.addGoal, intl),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.pinkAccent[200],
-                            onPrimary: Colors.white,
-                          ),
-                        ),
-                      ),
-                      _RingChart(),
-                    ],
-                  ),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              Expanded(
-                child: Card(
+      builder: (context, app, child) {
+        List<Widget> expandableTiles = [];
+        for (var category in app.categoriesMap.keys) {
+          expandableTiles.add(
+            _CategoryExpandableTile(
+                category, app.categoriesMap[category] ?? []),
+          );
+        }
+        return CustomScrollView(
+          slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate([
+                _ChartOverviewCard(),
+                Card(
                   margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,21 +48,67 @@ class GoalsTab extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: _CategoriesListView(),
-                      ),
+                      ...expandableTiles
                     ],
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+                )
+              ]),
+            ),
+          ],
+        );
+      },
     );
+  }
+}
+
+class _ChartOverviewCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AppModel>(
+        builder: (context, app, child) => Card(
+              margin: EdgeInsets.all(20),
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      //TODO make label dependant on currency
+                      "${app.income} \$",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      t(LabelsEnum.monthlyIncome, app.intl),
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 12, bottom: 20),
+                      child: ElevatedButton.icon(
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          goTo(context, RoutesEnum.AddGoal);
+                        },
+                        label: Text(
+                          t(LabelsEnum.addGoal, app.intl),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.pinkAccent[200],
+                          onPrimary: Colors.white,
+                        ),
+                      ),
+                    ),
+                    _RingChart(),
+                  ],
+                ),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+            ));
   }
 }
 
@@ -118,25 +131,6 @@ class _RingChart extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class _CategoriesListView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AppModel>(builder: (context, app, child) {
-      List<Widget> expandableTiles = [];
-      for (var category in app.categoriesMap.keys) {
-        expandableTiles.add(
-          _CategoryExpandableTile(category, app.categoriesMap[category] ?? []),
-        );
-      }
-
-      return ListView(
-        padding: const EdgeInsets.all(8),
-        children: expandableTiles,
-      );
-    });
   }
 }
 
