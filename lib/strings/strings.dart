@@ -6,17 +6,21 @@ import 'en.dart';
 enum LabelsEnum {
   addGoal,
   addCategory,
+  addExpense,
   allowance,
   category,
   color,
   customizeYourCategory,
+  customizeYourExpense,
   customizeYourGoal,
   english,
   expenses,
   exampleElectricGuitar,
+  exampleExpense,
   exampleNewCategory,
   exampleTargetGoal,
   exampleAllowance,
+  exampleValue,
   goals,
   monthlyIncome,
   name,
@@ -26,6 +30,7 @@ enum LabelsEnum {
   selectLanguage,
   target,
   unknown,
+  value
 }
 
 enum LanguageEnum {

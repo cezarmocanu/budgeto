@@ -1,4 +1,5 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/dashboard-tabs/expenses-tab.dart';
 import 'package:budgeto_flutter/dashboard-tabs/profile-tab.dart';
 import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:budgeto_flutter/dashboard-tabs/goals-tab.dart';
@@ -94,7 +95,7 @@ class Dashboard extends StatelessWidget {
                             fontSize: 16,
                           ),
                         ),
-                        Text("${app.income} / ${app.income} \$"),
+                        Text("${app.income - app.expended} / ${app.income} \$"),
                       ],
                     ),
                     Column(
@@ -145,7 +146,7 @@ class Dashboard extends StatelessWidget {
           body: TabBarView(
             children: [
               GoalsTab(),
-              Text("Welcome to expenses page"),
+              ExpensesTab(),
               ProfileTab(),
             ],
           ),
