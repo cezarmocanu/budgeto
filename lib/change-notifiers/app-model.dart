@@ -1,5 +1,6 @@
 import 'package:budgeto_flutter/common/snackbar-content.dart';
 import 'package:budgeto_flutter/models/category.dart';
+import 'package:budgeto_flutter/models/expense.dart';
 import 'package:budgeto_flutter/models/goal.dart';
 import 'package:budgeto_flutter/strings/strings.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,15 @@ import 'package:flutter/material.dart';
 class AppModel extends ChangeNotifier {
   late List<Category> _categories;
   late List<Goal> _goals;
+  late List<Expense> _expenses;
+
   LanguageEnum _intl = LanguageEnum.en;
   double income = 3201;
+
+  double get expended => _expenses.fold(
+        0,
+        (total, expense) => expense.value + total,
+      );
 
   AppModel() {
     _categories = [
@@ -34,6 +42,8 @@ class AppModel extends ChangeNotifier {
       Goal('Gas', 1000, _categories[5], 250),
       Goal('Water', 1000, _categories[6], 150),
     ];
+
+    _expenses = [];
   }
 
   Map<Category, List<Goal>> get categoriesMap {
@@ -60,6 +70,8 @@ class AppModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  get expenses => _expenses;
+
   void addCategory(Category category) {
     _categories.add(category);
     notifyListeners();
@@ -70,6 +82,12 @@ class AppModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addExpense(Expense expense) {
+    _expenses.add(expense);
+    notifyListeners();
+  }
+
+  //TODO add internationalization
   SnackbarContet fundGoal(Goal goal) {
     if (income - goal.allowance >= 0) {
       int index = _goals.indexWhere((element) => element.id == goal.id);
