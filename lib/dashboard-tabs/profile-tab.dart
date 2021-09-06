@@ -6,26 +6,76 @@ import 'package:provider/provider.dart';
 class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
+    // LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
     // var ddValues = getLanguagesDropdownValues(intl);
 
-    return Scaffold(
-      body: SizedBox.expand(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              margin: EdgeInsets.all(20),
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [_LanguageDropdown()],
+    return Consumer<AppModel>(builder: (context, app, child) {
+      return Scaffold(
+        body: SizedBox.expand(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                margin: EdgeInsets.all(20),
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _InfoRow(
+                        icon: Icons.person,
+                        label: "Username",
+                        value: "John Doe",
+                      ),
+                      _InfoRow(
+                        icon: Icons.monetization_on,
+                        value: app.income.toString(),
+                        label: "Monthly Income",
+                      ),
+                      _LanguageDropdown(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      );
+    });
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+
+  _InfoRow({
+    required this.label,
+    required this.value,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 10,
+        bottom: 20,
+        left: 8,
+        right: 8,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "$label: $value",
+            style: TextStyle(
+              fontSize: 16,
+            ),
+          ),
+          Icon(icon),
+        ],
       ),
     );
   }
