@@ -89,11 +89,13 @@ class AppModel extends ChangeNotifier {
 
   //TODO add internationalization
   SnackbarContet fundGoal(Goal goal) {
-    if (income - goal.allowance >= 0) {
+    if (expended + goal.allowance <= income) {
       int index = _goals.indexWhere((element) => element.id == goal.id);
       var targetGoal = _goals[index];
       targetGoal.fundBudget(targetGoal.allowance);
-      income -= targetGoal.allowance;
+
+      addExpense(Expense(name: targetGoal.name, value: targetGoal.allowance));
+
       notifyListeners();
       return SnackbarContet(
         message: 'Goal funded succesfully',
