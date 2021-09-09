@@ -76,6 +76,7 @@ class Dashboard extends StatelessWidget {
         length: _tabs.length,
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             elevation: 0,
             toolbarHeight: TABBAR_HEIGHT + 2 * TABBAR_PADDING + APPBAR_HEIGHT,
             // centerTitle: false,
