@@ -1,4 +1,5 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/common/form/styled-dropdown.dart';
 import 'package:budgeto_flutter/common/form/styled-form-field.dart';
 import 'package:budgeto_flutter/common/form/styled-form-header.dart';
 import 'package:budgeto_flutter/constants/routes.dart';
@@ -31,13 +32,24 @@ class _AddGoalForm extends StatefulWidget {
 class _FormState extends State<_AddGoalForm> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
   final Goal _goal = Goal.empty();
+  late final List<DropdownMenuItem<Category>> _dropdownItems;
 
   @override
   void initState() {
-    _goal.category = Provider.of<AppModel>(
+    var categories = Provider.of<AppModel>(
       context,
       listen: false,
-    ).categories[0];
+    ).categories;
+    _goal.category = categories[0];
+
+    _dropdownItems = categories
+        .map(
+          (category) => DropdownMenuItem<Category>(
+            value: category,
+            child: Text('${category.name}'),
+          ),
+        )
+        .toList();
     super.initState();
   }
 
@@ -95,9 +107,11 @@ class _FormState extends State<_AddGoalForm> {
                   hint: t(LabelsEnum.exampleAllowance, intl),
                   onSaved: _handleAllowanceSave,
                 ),
-                _CategoryDropdown(
-                  handleCategoryChange: _handleCategoryChange,
-                  selectedCategory: _goal.category,
+                StyledDropdown<Category>(
+                  handleChange: _handleCategoryChange,
+                  selected: _goal.category,
+                  items: _dropdownItems,
+                  label: t(LabelsEnum.category, intl),
                 ),
               ],
             ),
@@ -121,55 +135,5 @@ class _FormState extends State<_AddGoalForm> {
         ],
       ),
     );
-  }
-}
-
-class _CategoryDropdown extends StatelessWidget {
-  _CategoryDropdown({
-    required this.handleCategoryChange,
-    required this.selectedCategory,
-  });
-
-  final void Function(Category) handleCategoryChange;
-  final Category? selectedCategory;
-
-  @override
-  Widget build(BuildContext context) {
-    LanguageEnum intl = Provider.of<AppModel>(context, listen: true).intl;
-    return Consumer<AppModel>(builder: (context, app, child) {
-      var items = app.categories
-          .map(
-            (category) => DropdownMenuItem<Category>(
-              value: category,
-              child: Text('${category.name}'),
-            ),
-          )
-          .toList();
-      return DropdownButtonFormField<Category>(
-        isExpanded: true,
-        value: selectedCategory,
-        onChanged: (Category? newValue) {
-          handleCategoryChange(newValue ?? Category.empty());
-        },
-        items: items,
-        decoration: InputDecoration(
-          labelText: t(LabelsEnum.category, intl),
-          labelStyle: TextStyle(color: Colors.pinkAccent),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.black12,
-              width: 1.0,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.pinkAccent,
-              width: 2.0,
-            ),
-          ),
-        ),
-      );
-    });
   }
 }
