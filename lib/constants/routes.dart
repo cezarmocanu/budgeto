@@ -6,6 +6,7 @@ enum RoutesEnum {
   AddGoal,
   AddCategory,
   AddExpense,
+  WizzardStep1,
 }
 
 const Map<RoutesEnum, String> ROUTES_MAP = {
@@ -13,7 +14,8 @@ const Map<RoutesEnum, String> ROUTES_MAP = {
   RoutesEnum.AddGoal: '/addGoal',
   RoutesEnum.Onboard: '/onboard',
   RoutesEnum.AddCategory: '/addCategory',
-  RoutesEnum.AddExpense: '/addExpense'
+  RoutesEnum.AddExpense: '/addExpense',
+  RoutesEnum.WizzardStep1: '/wizzard/1',
 };
 
 void goTo(BuildContext context, RoutesEnum route) {
