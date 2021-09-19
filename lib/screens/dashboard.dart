@@ -1,4 +1,5 @@
 import 'package:budgeto_flutter/change-notifiers/app-model.dart';
+import 'package:budgeto_flutter/constants/routes.dart';
 import 'package:budgeto_flutter/dashboard-tabs/expenses-tab.dart';
 import 'package:budgeto_flutter/dashboard-tabs/profile-tab.dart';
 import 'package:budgeto_flutter/strings/strings.dart';
@@ -144,12 +145,85 @@ class Dashboard extends StatelessWidget {
               ),
             ),
           ),
-          body: TabBarView(
-            children: [
-              GoalsTab(),
-              ExpensesTab(),
-              ProfileTab(),
-            ],
+          body: SafeArea(
+            child: Stack(
+              children: [
+                TabBarView(
+                  children: [
+                    GoalsTab(),
+                    ExpensesTab(),
+                    ProfileTab(),
+                  ],
+                ),
+                //TODO add text underneath icons to make them more intuitive
+                Positioned(
+                  bottom: 0,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 2 / 3 * APPBAR_HEIGHT,
+                        color: Colors.pinkAccent,
+                      ),
+                      Container(
+                        //TODO make this have a relative size
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(32),
+                          ),
+                          color: Colors.pinkAccent,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: _IconButton(
+                            onClick: () {
+                              goTo(context, RoutesEnum.WizzardStep1);
+                            },
+                            icon: Icons.add,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _IconButton extends StatelessWidget {
+  final Function() onClick;
+  final IconData icon;
+
+  _IconButton({
+    required this.onClick,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onClick,
+      child: Container(
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 32,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(32),
+          ),
+          border: Border.all(
+            width: 3,
+            color: Colors.white,
           ),
         ),
       ),
